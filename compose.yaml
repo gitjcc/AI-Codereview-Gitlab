@@ -1,0 +1,18 @@
+name: code-review
+services:
+  code-review:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: app
+    container_name: code-review
+    ports:
+      - "5001:5001"
+      - "5002:5002"
+    volumes:
+      - ./conf/prompt_templates.yml:/app/conf/prompt_templates.yml
+      - ./data:/app/data
+      - ./log:/app/log
+    env_file:
+      - ./conf/.env
+    restart: unless-stopped

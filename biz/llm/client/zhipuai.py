@@ -13,7 +13,7 @@ class ZhipuAIClient(BaseClient):
         if not self.api_key:
             raise ValueError("API key is required. Please provide it or set it in the environment variables.")
 
-        self.client = ZhipuAI(api_key=api_key)
+        self.client = ZhipuAI(api_key=self.api_key)
         self.default_model = os.getenv("ZHIPUAI_API_MODEL", "GLM-4-Flash")
 
     def completions(self,
