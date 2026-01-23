@@ -1,4 +1,4 @@
-anthropic==0.39.0
+anthropic==0.76.0
 Flask==3.0.3
 APScheduler==3.10.4
 Flask==3.0.3
@@ -7,7 +7,7 @@ Jinja2==3.1.4
 lizard==1.17.20
 matplotlib==3.10.1
 ollama==0.4.7
-openai==1.59.3
+openai==2.15.0
 pandas==2.2.3
 pathspec==0.12.1
 PyMySQL==1.1.1

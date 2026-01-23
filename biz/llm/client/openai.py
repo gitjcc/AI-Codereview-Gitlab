@@ -15,15 +15,28 @@ class OpenAIClient(BaseClient):
             raise ValueError("API key is required. Please provide it or set it in the environment variables.")
 
         self.client = OpenAI(api_key=self.api_key, base_url=self.base_url)
-        self.default_model = os.getenv("OPENAI_API_MODEL", "gpt-4o-mini")
+        self.default_model = os.getenv("OPENAI_API_MODEL", "gpt-5.2")
 
     def completions(self,
                     messages: List[Dict[str, str]],
                     model: Optional[str] | NotGiven = NOT_GIVEN,
                     ) -> str:
         model = model or self.default_model
-        completion = self.client.chat.completions.create(
+        stream = self.client.responses.create(
             model=model,
-            messages=messages,
+            input=messages,
+            reasoning={"effort": "high"},
+            stream=True,
         )
-        return completion.choices[0].message.content
+
+        full_text = ""
+        for chunk in stream:
+            if chunk.type == "response.completed":
+                full_text = chunk.response.output_text or ""
+                break
+            
+            elif chunk.type == "response.output_text.delta":
+                full_text += chunk.delta or ""
+
+        # 如果没等到 completed，也用拼接的（fallback）
+        return full_text.strip()
